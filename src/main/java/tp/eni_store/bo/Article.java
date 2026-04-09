@@ -7,10 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Article {
     @Id
     private String id;
+    private String sellerId;
     private String title;
 
-    public Article(String id, String title) {
+    public Article(String id, String sellerId, String title) {
         this.id = id;
+        this.sellerId = sellerId;
         this.title = title;
     }
 
@@ -31,5 +33,13 @@ public class Article {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
     }
 }

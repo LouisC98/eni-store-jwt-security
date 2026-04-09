@@ -19,8 +19,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<String>> register(@RequestBody AuthDTO dto) {
         ApiResponse<String> response = authService.register(dto);
-        int httpStatus = response.getCode() == 206 ? 201 : 409;
-        return ResponseEntity.status(httpStatus).body(response);
+        if (response.getCode() == 206) {
+            return ResponseEntity.status(201).body(response);
+        }
+        if (response.getCode() == 706) {
+            return ResponseEntity.status(409).body(response);
+        }
+        return ResponseEntity.internalServerError().body(response);
     }
 
     @PostMapping("/login")

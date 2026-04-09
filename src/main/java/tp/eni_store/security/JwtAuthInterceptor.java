@@ -15,9 +15,11 @@ import java.util.Arrays;
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
+    private final AuthContext authContext;
 
-    public JwtAuthInterceptor(JwtService jwtService) {
+    public JwtAuthInterceptor(JwtService jwtService, AuthContext authContext) {
         this.jwtService = jwtService;
+        this.authContext = authContext;
     }
 
     @Override
@@ -54,6 +56,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
                             new ApiResponse<>(688, "Accès refusé", false));
                     return false;
                 }
+
+                authContext.setUserId(claims.get("userId", String.class));
+                authContext.setRole(userRole);
 
             } catch (Exception e) {
                 JsonResponseUtil.sendJson(response, HttpServletResponse.SC_UNAUTHORIZED,

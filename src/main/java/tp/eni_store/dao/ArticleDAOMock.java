@@ -15,8 +15,8 @@ public class ArticleDAOMock implements ArticleDAO {
 
     public ArticleDAOMock() {
         this.articles = new ArrayList<>(List.of(
-                new Article("1", "Article 1"),
-                new Article("2", "Article 2")
+                new Article("1", "user-1", "Article 1"),
+                new Article("2", "user-2", "Article 2")
         ));
     }
 
