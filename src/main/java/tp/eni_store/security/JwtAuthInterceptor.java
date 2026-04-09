@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import tp.eni_store.helper.LocaleHelper;
 import tp.eni_store.response.ApiResponse;
 
 import java.util.Arrays;
@@ -15,9 +16,11 @@ import java.util.Arrays;
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
+    private final LocaleHelper localeHelper;
 
-    public JwtAuthInterceptor(JwtService jwtService) {
+    public JwtAuthInterceptor(JwtService jwtService, LocaleHelper localeHelper) {
         this.jwtService = jwtService;
+        this.localeHelper = localeHelper;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             String authHeader = request.getHeader("Authorization");
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 JsonResponseUtil.sendJson(response, HttpServletResponse.SC_UNAUTHORIZED,
-                        new ApiResponse<>(690, "Token manquant", false));
+                        new ApiResponse<>(690, localeHelper.getMessage("jwt.missing"), false));
                 return false;
             }
 
@@ -51,13 +54,13 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
                 if (!hasRole) {
                     JsonResponseUtil.sendJson(response, HttpServletResponse.SC_FORBIDDEN,
-                            new ApiResponse<>(688, "Accès refusé", false));
+                            new ApiResponse<>(688, localeHelper.getMessage("jwt.forbidden"), false));
                     return false;
                 }
 
             } catch (Exception e) {
                 JsonResponseUtil.sendJson(response, HttpServletResponse.SC_UNAUTHORIZED,
-                        new ApiResponse<>(689, "Token invalide", false));
+                        new ApiResponse<>(689, localeHelper.getMessage("jwt.invalid"), false));
                 return false;
             }
         }
