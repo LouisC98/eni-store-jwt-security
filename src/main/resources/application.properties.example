@@ -1,0 +1,7 @@
+spring.application.name=eni-store
+spring.messages.basename=messages
+spring.messages.encoding=UTF-8
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=eni-store
+jwt.secret=your-secret-key-must-be-at-least-32-chars
